@@ -1,23 +1,16 @@
-class Cipher
-  def caesar_cipher(message, shift, result = '')
-    alpha = ('a'..'z').to_a
-    caesar = ('a'..'z').to_a
-    caesar.push(caesar.slice!(0, shift)).flatten!
-    message.split('').each do |msg_chr|
-      if msg_chr.match(/\w/)
-        alpha.each do |alpha_char|
-          next unless alpha_char == msg_chr.downcase
+# frozen_string_literal: true
 
-          result += if msg_chr == msg_chr.upcase
-                      caesar[alpha.index(alpha_char)].upcase
-                    else
-                      caesar[alpha.index(alpha_char)]
-                    end
-        end
+class Cipher
+  def caesar_cipher(string, key)
+    alphabet = ('a'..'z').to_a
+    key_rotated_alphabet = alphabet.rotate(key)
+    string.split('').map do |char|
+      if alphabet.include?(char.downcase)
+        new_char = key_rotated_alphabet[alphabet.index(char.downcase)]
+        char == char.upcase ? new_char.upcase : new_char
       else
-        result += msg_chr
+        char
       end
-    end
-    result
+    end.join
   end
 end
